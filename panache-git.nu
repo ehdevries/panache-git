@@ -63,6 +63,11 @@ def "panache-git structured" [] {
     { $false }
   )
 
+  let has-unresolved-merge-conflicts = (if $in-git-repo
+    { $status | lines | where ($it | str starts-with "u") | str collect | empty? | nope }
+    { $false }
+  )
+
   let staging-worktree-table = (if $has-staging-or-worktree-changes
     { $status | lines | where ($it | str starts-with "1") || ($it | str starts-with "2") | split column " " | get Column2 | split column "" staging worktree --collapse-empty }
     { [[];[]] }
@@ -98,9 +103,14 @@ def "panache-git structured" [] {
     { 0 }
   )
 
+  let merge-conflict-count = (if $has-unresolved-merge-conflicts
+    { $status | lines | where ($it | str starts-with "u") | length }
+    { 0 }
+  )
+
   [
-    [in_git_repo,  on_named_branch,  branch_name,  commit_hash,  tracking_upstream_branch,  upstream_exists_on_remote,  commits_ahead,  commits_behind,  staging_added_count,  staging_modified_count,  staging_deleted_count,  untracked_count,  worktree_modified_count,  worktree_deleted_count];
-    [$in-git-repo, $on-named-branch, $branch-name, $commit-hash, $tracking-upstream-branch, $upstream-exists-on-remote, $commits-ahead, $commits-behind, $staging-added-count, $staging-modified-count, $staging-deleted-count, $untracked-count, $worktree-modified-count, $worktree-deleted-count]
+    [in_git_repo,  on_named_branch,  branch_name,  commit_hash,  tracking_upstream_branch,  upstream_exists_on_remote,  commits_ahead,  commits_behind,  staging_added_count,  staging_modified_count,  staging_deleted_count,  untracked_count,  worktree_modified_count,  worktree_deleted_count,  merge_conflict_count];
+    [$in-git-repo, $on-named-branch, $branch-name, $commit-hash, $tracking-upstream-branch, $upstream-exists-on-remote, $commits-ahead, $commits-behind, $staging-added-count, $staging-modified-count, $staging-deleted-count, $untracked-count, $worktree-modified-count, $worktree-deleted-count, $merge-conflict-count]
   ]
 }
 
@@ -168,6 +178,12 @@ def "panache-git styled" [] {
     deleted: int
   ] {
     $"+($added) ~($modified) -($deleted)" | red
+  }
+
+  def unresolved-conflicts [
+    conflicts: int
+  ] {
+    $"!($conflicts)" | red
   }
 
   let status = (panache-git structured)
@@ -257,8 +273,11 @@ def "panache-git styled" [] {
   let has-worktree-changes = (
     $status.untracked_count > 0 ||
     $status.worktree_modified_count > 0 ||
-    $status.worktree_deleted_count > 0
+    $status.worktree_deleted_count > 0 ||
+    $status.merge_conflict_count > 0
   )
+
+  let has-merge-conflicts = $status.merge_conflict_count > 0
 
   let staging-summary = (if $has-staging-changes
     { (staging-changes $status.staging_added_count $status.staging_modified_count $status.staging_deleted_count) }
@@ -270,12 +289,17 @@ def "panache-git styled" [] {
     { "" }
   )
 
+  let merge-conflict-summary = (if $has-merge-conflicts
+    { (unresolved-conflicts $status.merge_conflict_count) }
+    { "" }
+  )
+
   let delimiter = (if ($has-staging-changes && $has-worktree-changes)
     { ("|" | bright-yellow) }
     { "" }
   )
 
-  let local-summary = ($"($staging-summary) ($delimiter) ($worktree-summary)" | str trim)
+  let local-summary = ($"($staging-summary) ($delimiter) ($worktree-summary) ($merge-conflict-summary)" | str trim)
 
   let local-indicator = (if $status.in_git_repo
     {
