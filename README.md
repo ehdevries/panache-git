@@ -25,27 +25,25 @@ To install panache-git:
 2. Download the script
 
    ```nu
-   git clone https://github.com/ehdevries/panache-git.git ~/.panache-git --depth=1
+   git clone https://github.com/ehdevries/panache-git.git ~/.panache-git
    ```
 
-3. Run the script when Nushell starts
-
-   a. If you already have a "startup" section in your Nushell config (to check, run `config get startup`):
+3. Open your Nushell config file in your favorite editor
 
    ```nu
-   config get startup | append "source ~/.panache-git/panache-git.nu" | config set_into startup
+   code $nu.config-path  # for example, with VS Code
    ```
 
-   b. If you _do not yet_ have a "startup" section in your Nushell config:
+4. In the config file:
+
+   - Source the `panache-git.nu` script
+   - Set `panache-git` as your prompt command
+   - Disable the separate prompt indicator by setting it to an empty string
 
    ```nu
-   config set startup "source ~/.panache-git/panache-git.nu"
-   ```
-
-4. Set panache-git as your Nushell prompt
-
-   ```nu
-   config set prompt panache-git
+   source ~/.panache-git/panache-git.nu
+   let-env PROMPT_COMMAND = { panache-git }
+   let-env PROMPT_INDICATOR = ""
    ```
 
 5. Restart Nushell
@@ -58,7 +56,7 @@ To install panache-git:
 | Only works with PowerShell | Only works with Nushell |
 | Cross-platform (with PowerShell Core 6+) | Cross-platform |
 | Highly configurable | Opinionated (the nice way of saying "not configurable") |
-| Tab-completion for Git commands and branch names | No completions (although Nushell itself is [working on them](https://www.nushell.sh/blog/2021-09-14-nushell_0_37.html#new-design)) |
+| Tab-completion for Git commands and branch names | No Git completions, although Nushell itself has built-in support for [custom completions](https://www.nushell.sh/book/custom_completions.html) and includes a few Git completions in its [default config file](https://www.nushell.sh/book/configuration.html) |
 
 ## Why?
 
