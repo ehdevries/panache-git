@@ -28,10 +28,10 @@ To install panache-git:
    git clone https://github.com/ehdevries/panache-git.git ~/.panache-git
    ```
 
-3. Open your Nushell config file in your favorite editor
+3. Open your Nushell environment config file with your favorite editor
 
    ```nu
-   code $nu.config-path  # for example, with VS Code
+   code $nu.env-path  # for example, with VS Code
    ```
 
 4. In the config file:
@@ -43,7 +43,7 @@ To install panache-git:
    ```nu
    source ~/.panache-git/panache-git.nu
    let-env PROMPT_COMMAND = { panache-git }
-   let-env PROMPT_INDICATOR = ""
+   let-env PROMPT_INDICATOR = { "" }
    ```
 
 5. Restart Nushell
@@ -56,7 +56,7 @@ To install panache-git:
 | Only works with PowerShell | Only works with Nushell |
 | Cross-platform (with PowerShell Core 6+) | Cross-platform |
 | Highly configurable | Opinionated (the nice way of saying "not configurable") |
-| Tab-completion for Git commands and branch names | No Git completions, although Nushell itself has built-in support for [custom completions](https://www.nushell.sh/book/custom_completions.html) and includes a few Git completions in its [default config file](https://www.nushell.sh/book/configuration.html) |
+| Tab-completion for Git commands and branch names | No completions, although Nushell itself has built-in support for [custom completions](https://www.nushell.sh/book/custom_completions.html) and includes a few Git completions in its [default config file](https://www.nushell.sh/book/configuration.html) |
 
 ## Why?
 

@@ -3,14 +3,14 @@
 #
 # Quick Start:
 # - Download this script (panache-git.nu)
-# - In your Nushell config file (config.nu):
+# - In your Nushell config:
 #   - Source this script
 #   - Set panache-git as your prompt command
 #   - Disable the separate prompt indicator by setting it to an empty string
 # - For example, with this script in your home directory:
 #     source ~/panache-git.nu
 #     let-env PROMPT_COMMAND = { panache-git }
-#     let-env PROMPT_INDICATOR = ""
+#     let-env PROMPT_INDICATOR = { "" }
 # - Restart Nushell
 #
 # For more documentation or to file an issue, see https://github.com/ehdevries/panache-git
