@@ -20,28 +20,30 @@ Before you can use panache-git, you will need:
 
 To install panache-git:
 
-1. Read over the [panache-git.nu](./panache-git.nu) script - if it's going to run on your system, a little extra caution can't hurt
+1. Read over [panache-git.nu](./panache-git.nu) - if it's going to run on your system, a little extra caution can't hurt
 
-2. Download the script
+2. Download `panache-git.nu`
 
    ```nu
    git clone https://github.com/ehdevries/panache-git.git ~/.panache-git
    ```
 
-3. Open your Nushell environment config file with your favorite editor
+3. Open your Nushell environment config file
 
    ```nu
-   code $nu.env-path  # for example, with VS Code
+   config env         # with your default editor
+   # or #
+   code $nu.env-path  # with a specific editor, VS Code in this case
    ```
 
 4. In the config file:
 
-   - Source the `panache-git.nu` script
+   - Import the `panache-git` command from the `panache-git.nu` module file
    - Set `panache-git` as your prompt command
    - Disable the separate prompt indicator by setting it to an empty string
 
    ```nu
-   source ~/.panache-git/panache-git.nu
+   use ~/.panache-git/panache-git.nu panache-git
    let-env PROMPT_COMMAND = { panache-git }
    let-env PROMPT_INDICATOR = { "" }
    ```
