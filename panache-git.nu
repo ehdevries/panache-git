@@ -23,7 +23,7 @@ export def panache-git [] {
 }
 
 # Get the current directory with home abbreviated
-def current-dir [] {
+export def current-dir [] {
   let current_dir = ($env.PWD)
 
   let current_dir_relative_to_home = (
@@ -42,7 +42,7 @@ def current-dir [] {
 }
 
 # Get repository status as structured data
-def repo-structured [] {
+export def repo-structured [] {
   let in_git_repo = (do --ignore-errors { git rev-parse --abbrev-ref HEAD } | is-empty | nope)
 
   let status = (if $in_git_repo {
@@ -245,7 +245,7 @@ def repo-structured [] {
 }
 
 # Get repository status as a styled string
-def repo-styled [] {
+export def repo-styled [] {
   let status = (repo-structured)
 
   let is_local_only = ($status.tracking_upstream_branch != true)
