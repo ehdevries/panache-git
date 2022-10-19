@@ -54,7 +54,7 @@ export def repo-structured [] {
   let on_named_branch = (if $in_git_repo {
     $status
     | where ($it | str starts-with '# branch.head')
-    | first
+    | get 0
     | str contains '(detached)'
     | nope
   } else {
@@ -65,8 +65,7 @@ export def repo-structured [] {
     $status
     | where ($it | str starts-with '# branch.head')
     | split column ' ' col1 col2 branch
-    | get branch
-    | first
+    | get branch.0
   } else {
     ''
   })
@@ -75,8 +74,7 @@ export def repo-structured [] {
     $status
     | where ($it | str starts-with '# branch.oid')
     | split column ' ' col1 col2 full_hash
-    | get full_hash
-    | first
+    | get full_hash.0
     | str substring [0 7]
   } else {
     ''
@@ -112,8 +110,7 @@ export def repo-structured [] {
 
   let commits_ahead = (if $upstream_exists_on_remote {
     $ahead_behind_table
-    | get ahead
-    | first
+    | get ahead.0
     | into int
   } else {
     0
@@ -121,8 +118,7 @@ export def repo-structured [] {
 
   let commits_behind = (if $upstream_exists_on_remote {
     $ahead_behind_table
-    | get behind
-    | first
+    | get behind.0
     | into int
     | math abs
   } else {
