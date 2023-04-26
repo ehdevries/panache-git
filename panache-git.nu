@@ -4,20 +4,20 @@
 # Quick Start:
 # - Download this file (panache-git.nu)
 # - In your Nushell config:
-#   - Import the panache-git command from the panache-git.nu module file
+#   - Import the main command from the panache-git.nu module file
 #   - Set panache-git as your prompt command
 #   - Disable the separate prompt indicator by setting it to an empty string
 # - For example, with this file in your home directory:
-#     use ~/panache-git.nu panache-git
-#     let-env PROMPT_COMMAND = { panache-git }
-#     let-env PROMPT_INDICATOR = { "" }
+#     use ~/panache-git.nu main
+#     let-env PROMPT_COMMAND = {|| panache-git }
+#     let-env PROMPT_INDICATOR = {|| "" }
 # - Restart Nushell
 #
 # For more documentation or to file an issue, see https://github.com/ehdevries/panache-git
 
 
 # An opinionated Git prompt for Nushell, styled after posh-git
-export def panache-git [] {
+export def main [] {
   let prompt = ($'(current-dir) (repo-styled)' | str trim)
   $'($prompt)> '
 }
@@ -77,7 +77,7 @@ export def repo-structured [] {
     | split column ' ' col1 col2 full_hash
     | get full_hash
     | first
-    | str substring [0 7]
+    | str substring 0..7
   } else {
     ''
   })

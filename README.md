@@ -38,14 +38,14 @@ To install panache-git:
 
 4. In the config file:
 
-   - Import the `panache-git` command from the `panache-git.nu` module file
+   - Import the `main` command from the `panache-git.nu` module file
    - Set `panache-git` as your prompt command
    - Disable the separate prompt indicator by setting it to an empty string
 
    ```nu
-   use ~/.panache-git/panache-git.nu panache-git
-   let-env PROMPT_COMMAND = { panache-git }
-   let-env PROMPT_INDICATOR = { "" }
+   use ~/.panache-git/panache-git.nu main
+   let-env PROMPT_COMMAND = {|| panache-git }
+   let-env PROMPT_INDICATOR = {|| "" }
    ```
 
 5. Restart Nushell
@@ -58,7 +58,7 @@ To install panache-git:
 | Only works with PowerShell | Only works with Nushell |
 | Cross-platform (with PowerShell Core 6+) | Cross-platform |
 | Highly configurable | Opinionated (the nice way of saying "not configurable") |
-| Tab-completion for Git commands and branch names | No completions, although Nushell itself has built-in support for [custom completions](https://www.nushell.sh/book/custom_completions.html) and includes a few Git completions in its [default config file](https://www.nushell.sh/book/configuration.html) |
+| Tab-completion for Git commands and branch names | No completions, although Nushell itself has built-in support for [custom completions](https://www.nushell.sh/book/custom_completions.html) |
 
 ## Why?
 
