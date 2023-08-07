@@ -44,8 +44,8 @@ To install panache-git:
 
    ```nu
    use ~/.panache-git/panache-git.nu main
-   let-env PROMPT_COMMAND = {|| panache-git }
-   let-env PROMPT_INDICATOR = {|| "" }
+   $env.PROMPT_COMMAND = {|| panache-git }
+   $env.PROMPT_INDICATOR = {|| "" }
    ```
 
 5. Restart Nushell
