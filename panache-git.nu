@@ -43,7 +43,7 @@ export def current-dir [] {
 
 # Get repository status as structured data
 export def repo-structured [] {
-  let in_git_repo = (do --ignore-errors { git rev-parse --abbrev-ref HEAD } | is-not-empty)
+  let in_git_repo = (do { git rev-parse --abbrev-ref HEAD } | complete | get stdout | is-not-empty)
 
   let status = (if $in_git_repo {
     git --no-optional-locks status --porcelain=2 --branch | lines
